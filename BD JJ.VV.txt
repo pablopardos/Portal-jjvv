@@ -1,0 +1,167 @@
+CREATE TABLE permiso (
+  id_perm int NOT NULL AUTO_INCREMENT, 
+  tipo varchar(20) NOT NULL,
+  descrip varchar(80) DEFAULT NULL,  
+  PRIMARY KEY (id_perm)
+);
+
+CREATE TABLE usuario (
+  id_user int NOT NULL AUTO_INCREMENT, 
+  id_perm int  NOT NULL,
+  rut varchar(20) NOT NULL,
+  pass varchar(20) NOT NULL,
+  FOREIGN KEY (id_perm) REFERENCES permiso(id_perm),
+  PRIMARY KEY (id_user)
+);
+
+CREATE TABLE ecivil (
+  id_ecivil int NOT NULL AUTO_INCREMENT,
+  descrip varchar(20) DEFAULT NULL,  
+  PRIMARY KEY (id_ecivil)
+);
+
+CREATE TABLE rolfamiliar (
+  id_rolfam int NOT NULL AUTO_INCREMENT, 
+  descrip varchar(20) DEFAULT NULL,  
+  PRIMARY KEY (id_rolfam)
+);
+
+CREATE TABLE tipocert (
+  id_tipocert int NOT NULL AUTO_INCREMENT,
+  tipo varchar(20) DEFAULT NULL,  
+  PRIMARY KEY (id_tipocert)
+);
+
+CREATE TABLE tipopublicacion (
+  id_tipopub int NOT NULL AUTO_INCREMENT, 
+  tipo varchar(20) NOT NULL,
+  descrip varchar(50) DEFAULT NULL,  
+  PRIMARY KEY (id_tipopub)
+);
+
+CREATE TABLE publicacion (
+  id_pub int NOT NULL AUTO_INCREMENT, 
+  id_tipopub int NOT NULL,
+  id_user int NOT NULL,
+  asunto varchar(100) DEFAULT NULL,  
+  descrip text(60000) DEFAULT NULL,
+  FOREIGN KEY (id_tipopub) REFERENCES tipopublicacion(id_tipopub),
+  FOREIGN KEY (id_user) REFERENCES usuario(id_user),
+  PRIMARY KEY (id_pub)
+);
+
+CREATE TABLE calle (
+  id_calle int NOT NULL,
+  calle varchar(60) DEFAULT NULL,  
+  PRIMARY KEY (id_calle)
+);
+
+CREATE TABLE numero (
+  id_num int NOT NULL,
+  PRIMARY KEY (id_num)
+);
+
+CREATE TABLE direccion (
+  id_direc int NOT NULL,
+  id_calle int NOT NULL,
+  id_num int NOT NULL,
+  FOREIGN KEY (id_calle) REFERENCES calle(id_calle),
+  FOREIGN KEY (id_num) REFERENCES numero(id_num),
+  PRIMARY KEY (id_direc)
+);
+
+CREATE TABLE socio (
+  id_socio int NOT NULL,
+  id_user int NOT NULL,
+  id_direc int NOT NULL,
+  id_ecivil int NOT NULL,
+  id_rolfam int NOT NULL,
+  nom_p varchar(20) DEFAULT NULL,  
+  nom_s varchar(20) DEFAULT NULL,  
+  ap_p varchar(20) DEFAULT NULL,  
+  ap_s varchar(20) DEFAULT NULL,  
+  prof varchar(20) DEFAULT NULL,  
+  email varchar(80) DEFAULT NULL,  
+  nacimiento timestamp,
+  FOREIGN KEY (id_user) REFERENCES usuario(id_user),
+  FOREIGN KEY (id_direc) REFERENCES direccion(id_direc),
+  FOREIGN KEY (id_ecivil) REFERENCES ecivil(id_ecivil),
+  FOREIGN KEY (id_rolfam) REFERENCES rolfamiliar(id_rolfam),
+  PRIMARY KEY (id_socio)
+);
+
+CREATE TABLE certresidencia(
+  id_cert int NOT NULL AUTO_INCREMENT, 
+  id_tipocert int NOT NULL,
+  id_socio int NOT NULL,
+  id_direc int NOT NULL,
+  rut varchar(20) NOT NULL,
+  nombre varchar(80) NOT NULL,
+  asunto varchar(80) NOT NULL,
+  FOREIGN KEY (id_tipocert) REFERENCES tipocert(id_tipocert),
+  FOREIGN KEY (id_socio) REFERENCES socio(id_socio),
+  FOREIGN KEY (id_direc) REFERENCES direccion(id_direc),
+  PRIMARY KEY (id_cert)
+);
+
+CREATE TABLE year (
+  ID_year int NOT NULL,
+  PRIMARY KEY (id_year)
+);
+
+CREATE TABLE mes (
+  id_mes int NOT NULL,
+  PRIMARY KEY (id_mes)
+);
+
+CREATE TABLE estadopago (
+  id_estpag int NOT NULL AUTO_INCREMENT, 
+  id_direc int NOT NULL,
+  id_year int NOT NULL,
+  id_mes int NOT NULL,
+  estado tinyint(1) NOT NULL,
+  FOREIGN KEY (id_direc) REFERENCES direccion(id_direc),
+  FOREIGN KEY (id_year) REFERENCES year(id_year),
+  FOREIGN KEY (id_mes) REFERENCES mes(id_mes),
+  PRIMARY KEY (id_estpag)
+);
+
+CREATE TABLE nuevosocio (
+  id_nuevo int NOT NULL AUTO_INCREMENT, 
+  id_direc int NOT NULL,
+  rut varchar(20) DEFAULT NULL,
+  pass varchar(20) DEFAULT NULL,
+  nom_p varchar(20) DEFAULT NULL,
+  nom_s varchar(20) DEFAULT NULL,
+  ap_p varchar(20) DEFAULT NULL,
+  ap_s varchar(20) DEFAULT NULL,
+  nacimiento timestamp,
+  FOREIGN KEY (id_direc) REFERENCES direccion(id_direc),
+  PRIMARY KEY (id_nuevo)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
